@@ -1,0 +1,11 @@
+sort1 uses: bubble sort
+
+How do you know?: omega is lower on sorted text, and random is slower than reversed
+
+sort2 uses: merge sort
+
+How do you know?: running time is in theta and this sort is the fastest of the 3
+
+sort3 uses: selection sort
+
+How do you know?: running time is in theta and it s slower than the other method in tetha of the 3
