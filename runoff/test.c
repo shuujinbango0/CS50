@@ -1,6 +1,5 @@
 #include <cs50.h>
 #include <stdio.h>
-#include <string.h>
 
 // Max voters and candidates
 #define MAX_VOTERS 100
@@ -125,105 +124,48 @@ int main(int argc, string argv[])
 }
 
 // Record preference if vote is valid
-// Q::Q for candidates 0 in main let s say is name is Bob
-// and in the vote function for 0 voter the 1 choice is Bob
-// with 3 for loops it means that at i = 0, j = 1, k = 0 preferences[0][1] = 0 Q::Q
 bool vote(int voter, int rank, string name)
 {
-    for (int k = 0; k < candidate_count; k++)
+    for (int i = 0; i < candidate_count; i++)
     {
-        if (strcmp(name, candidates[k].name) == 0)
-        {
-            preferences[voter][rank] = k;
-            return true;
-        }
+        if name
     }
+
+    // TODO
     return false;
 }
 
 // Tabulate votes for non-eliminated candidates
-// Q::Q for 0 voter 0 rank i want to check if preferences == candidate index
-// I want to make sure first that the candidate has not been eliminated
-// Let s say here Bob is rank 1 for voter 0 !!I want to check if preferences[0][1] == 0!!
-// !!! NO i don t need to check it s already == to the candidate index 0 i just need to check
-// if it is not an eliminated candidate and then increment the vote Q::Q
 void tabulate(void)
 {
-    for (int i = 0; i < voter_count; i++)
-    {
-        for (int j = 0; j < candidate_count; j++)
-        {
-            if (candidates[preferences[i][j]].eliminated == false)
-            {
-                candidates[preferences[i][j]].votes++;
-                break;
-            }
-        }
-    }
+    // TODO
     return;
 }
 
 // Print the winner of the election, if there is one
-// Q::Q I want to check if a candidate has more than 50% of the voter_count + 1 Q::Q
 bool print_winner(void)
 {
-    for (int i = 0, j = 0; i < candidate_count; i++)
-    {
-        if (candidates[i].votes >= voter_count / 2 + 1)
-        {
-            printf("%s\n", candidates[i].name);
-            return true;
-        }
-    }
+    // TODO
     return false;
 }
 
 // Return the minimum number of votes any remaining candidate has
-// Q::Q VERY IMPORTANT THE SYNTAX HERE: the j is initialized before the for loop
-// j gets a value assigned in the for loop but as it was declared outside it is in the scope of the
-// whole function so the function returns j with the value assigned to it in the for loop Q::Q
 int find_min(void)
 {
-    int j = voter_count;
-    for (int i = 0; i < candidate_count; i++)
-    {
-        if (candidates[i].eliminated == false)
-        {
-            if (candidates[i].votes < j)
-            {
-                j = candidates[i].votes;
-            }
-        }
-    }
-    return j;
+    // TODO
+    return 0;
 }
 
 // Return true if the election is tied between all candidates, false otherwise
 bool is_tie(int min)
 {
-    bool tie = true;
-    for (int i = 0; i < candidate_count; i++)
-    {
-        if (candidates[i].eliminated == false)
-        {
-            if (candidates[i].votes != min)
-            {
-                tie = false;
-            }
-        }
-    }
-    return tie;
+    // TODO
+    return false;
 }
 
 // Eliminate the candidate (or candidates) in last place
 void eliminate(int min)
 {
-    for (int i = 0; i < candidate_count; i++)
-    {
-        if (candidates[i].votes == min)
-        {
-            candidates[i].eliminated = true;
-        }
-    }
+    // TODO
     return;
 }

@@ -1,6 +1,6 @@
 #include <cs50.h>
-#include <stdio.h>
 #include <string.h>
+#include <stdio.h>
 
 // Max voters and candidates
 #define MAX_VOTERS 100
@@ -29,7 +29,7 @@ bool vote(int voter, int rank, string name);
 void tabulate(void);
 bool print_winner(void);
 int find_min(void);
-bool is_tie(int min);
+bool is_tie(void);
 void eliminate(int min);
 
 int main(int argc, string argv[])
@@ -78,7 +78,6 @@ int main(int argc, string argv[])
                 return 4;
             }
         }
-
         printf("\n");
     }
 
@@ -97,7 +96,7 @@ int main(int argc, string argv[])
 
         // Eliminate last-place candidates
         int min = find_min();
-        bool tie = is_tie(min);
+        bool tie = is_tie();
 
         // If tie, everyone wins
         if (tie)
@@ -125,94 +124,121 @@ int main(int argc, string argv[])
 }
 
 // Record preference if vote is valid
-// Q::Q for candidates 0 in main let s say is name is Bob
-// and in the vote function for 0 voter the 1 choice is Bob
-// with 3 for loops it means that at i = 0, j = 1, k = 0 preferences[0][1] = 0 Q::Q
 bool vote(int voter, int rank, string name)
 {
-    for (int k = 0; k < candidate_count; k++)
+    // TODO
+    // Check if name is valid
+    // Iterate over each candidate
+    for (int i = 0; i < candidate_count; i++)
     {
-        if (strcmp(name, candidates[k].name) == 0)
+        // Check if candidate has been eliminated
+        if (candidates[i].eliminated == false)
         {
-            preferences[voter][rank] = k;
-            return true;
+        // Check if candidate's name matches given name
+            if (strcmp(name, candidates[i].name) == 0)
+            {
+            // Query for each rank
+                for (int j = 0; j < candidate_count; j++)
+                {
+                    preferences[voter][rank] = i;
+                    return true;
+                }
+            }
         }
     }
     return false;
 }
 
 // Tabulate votes for non-eliminated candidates
-// Q::Q for 0 voter 0 rank i want to check if preferences == candidate index
-// I want to make sure first that the candidate has not been eliminated
-// Let s say here Bob is rank 1 for voter 0 !!I want to check if preferences[0][1] == 0!!
-// !!! NO i don t need to check it s already == to the candidate index 0 i just need to check
-// if it is not an eliminated candidate and then increment the vote Q::Q
 void tabulate(void)
 {
+    // calculate the number of votes for each candidate for each rank
+    for (int i = 0; i < voter_count; i++)
+        {
+            int first_choice_candidate = preferences[i][0];
+            if (!candidates[first_choice_candidate].eliminated)
+            {
+                candidates[first_choice_candidate].votes ++;
+            }
+            else
+            {
+                for (int j = 1; j < candidate_count; j++)
+                    {
+                        int next_preference = preferences[i][j];
+                        if (!candidates[next_preference].eliminated)
+                        {
+                            candidates[next_preference].votes ++;
+                            break;
+                        }
+                    }
+            }
+
+        }
+        return;
+}
+// Print the winner of the election, if there is one
+bool print_winner(void)
+{
+    // Find the maximum number of votes // Iterate over each candidate
+    int highest_number_votes = 0;
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (candidates[i].votes > highest_number_votes)
+        {
+            highest_number_votes = candidates[i].votes;
+        }
+    }
+    int total_votes = 0;
     for (int i = 0; i < voter_count; i++)
     {
         for (int j = 0; j < candidate_count; j++)
         {
-            if (candidates[preferences[i][j]].eliminated == false)
             {
-                candidates[preferences[i][j]].votes++;
+                total_votes += candidates[i].votes;
                 break;
             }
         }
     }
-    return;
-}
-
-// Print the winner of the election, if there is one
-// Q::Q I want to check if a candidate has more than 50% of the voter_count + 1 Q::Q
-bool print_winner(void)
-{
-    for (int i = 0, j = 0; i < candidate_count; i++)
+    // Print the candidate (or candidates) with maximum votes
+    for (int i = 0; i < candidate_count; i++)
     {
-        if (candidates[i].votes >= voter_count / 2 + 1)
+        if (candidates[i].votes == highest_number_votes)
         {
-            printf("%s\n", candidates[i].name);
-            return true;
+            if (highest_number_votes >= total_votes*2)
+            {
+                printf("%s\n", candidates[i].name);
+                return true;
+            }
         }
     }
     return false;
 }
 
 // Return the minimum number of votes any remaining candidate has
-// Q::Q VERY IMPORTANT THE SYNTAX HERE: the j is initialized before the for loop
-// j gets a value assigned in the for loop but as it was declared outside it is in the scope of the
-// whole function so the function returns j with the value assigned to it in the for loop Q::Q
 int find_min(void)
 {
-    int j = voter_count;
+    int min = candidates[0].votes;
     for (int i = 0; i < candidate_count; i++)
     {
-        if (candidates[i].eliminated == false)
+        if (candidates[i].votes < min)
         {
-            if (candidates[i].votes < j)
-            {
-                j = candidates[i].votes;
-            }
+            min = candidates[i].votes;
         }
     }
-    return j;
+    return min;
 }
 
 // Return true if the election is tied between all candidates, false otherwise
-bool is_tie(int min)
+bool is_tie(void)
 {
-    bool tie = true;
-    for (int i = 0; i < candidate_count; i++)
+    for (int i = 0; i < candidate_count - 1; i++)
     {
-        if (candidates[i].eliminated == false)
+        if (candidates[i].votes != candidates[i + 1].votes)
         {
-            if (candidates[i].votes != min)
-            {
-                tie = false;
-            }
+            return false;
         }
     }
-    return tie;
+    return true;
 }
 
 // Eliminate the candidate (or candidates) in last place
@@ -220,7 +246,7 @@ void eliminate(int min)
 {
     for (int i = 0; i < candidate_count; i++)
     {
-        if (candidates[i].votes == min)
+        if (min == candidates[i].votes)
         {
             candidates[i].eliminated = true;
         }
