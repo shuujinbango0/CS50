@@ -1,0 +1,15 @@
+
+MISSPELLED WORDS
+
+A
+a
+
+WORDS MISSPELLED:     2
+WORDS IN DICTIONARY:  1
+WORDS IN TEXT:        6
+TIME IN load:         0.02
+TIME IN check:        0.00
+TIME IN size:         0.00
+TIME IN unload:       0.00
+TIME IN TOTAL:        0.02
+
