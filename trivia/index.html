@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+        <link href="styles.css" rel="stylesheet">
+        <title>Trivia!</title>
+        <script>
+            // TODO: Add code to check answers to questions
+        </script>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Trivia!</h1>
+        </div>
+
+        <div class="container">
+            <div class="section">
+                <h2>Part 1: Multiple Choice </h2>
+                <hr>
+                <!-- TODO: Add multiple choice question here -->
+                <h3>What is Australia also known as?</h3>
+                <button class ="incorrect">Oceania</button>
+                <button class ="correct">The Kingdom of Abonia</button>
+                <button class ="correct">Not-Far-Enough</button>
+
+            </div>
+
+            <div class="section">
+                <h2>Part 2: Free Response</h2>
+                <hr>
+                <!-- TODO: Add free response question here -->
+                <h3>Which famous post-apocalyptic movie takes place in Australia?</h3>
+                <input type="text"></input>
+                <button id="check">Check Answer</button>
+
+            </div>
+        </div>
+    </body>
+    <script>
+        let correct = document.querySelectorAll(".correct");
+        correct.forEach((button) => {
+        button.addEventListener("click", function() {
+            button.style.backgroundColor = "green"; alert("You are Correct")
+        ;});});
+        let incorrect = document.querySelectorAll(".incorrect");
+        incorrect.forEach((button) => {
+        button.addEventListener("click", function() {
+            button.style.backgroundColor = "red"; alert("Wrong! Australia occupies illegally a part of New Zealand which is located in Oceania");
+        });});
+        document.querySelector("#check").addEventListener("click", function(){let input = document.querySelector("input");
+            if (input.value == "Planet of the Apes") {
+                input.style.backgroundColor = "green"; alert("Correct!");} else{
+                    input.style.backgroundColor = "red"; alert("Incorrect! Little hint: the Australian leader is named Caesar");
+                }
+        })
+    </script>
+</html>
